@@ -5,7 +5,7 @@
 
 ## 🌐 Demo trực tuyến
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://your-app-url.streamlit.app)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://tieu-luan-ket-thuc-hoc-phan-lzswz9lnpnyyupxtmkzwra.streamlit.app/)
 
 ---
 
