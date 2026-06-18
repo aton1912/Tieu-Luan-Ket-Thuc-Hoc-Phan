@@ -24,39 +24,6 @@
 
 ---
 
-## Chạy ứng dụng
-
-### Cách 1: Cài đặt local
-
-```bash
-# Clone repository
-git clone https://github.com/yourusername/ml-algorithms-demo.git
-cd ml-algorithms-demo
-
-# Tạo virtual environment (khuyến nghị)
-python -m venv venv
-source venv/bin/activate      # Linux/Mac
-venv\Scripts\activate         # Windows
-
-# Cài dependencies
-pip install -r requirements.txt
-
-# Chạy app
-streamlit run app.py
-```
-
-Mở trình duyệt và truy cập: `http://localhost:8501`
-
-### Cách 2: Deploy lên Streamlit Cloud
-
-1. Fork repo này
-2. Vào [share.streamlit.io](https://share.streamlit.io)
-3. Kết nối GitHub và chọn repo
-4. Chọn `app.py` làm file chính
-5. Deploy!
-
----
-
 ## 📁 Cấu trúc project
 
 ```
