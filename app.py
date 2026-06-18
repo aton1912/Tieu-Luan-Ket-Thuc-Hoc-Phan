@@ -72,8 +72,8 @@ with st.sidebar:
     st.markdown("### 📚 Thông tin")
     st.info("Chọn từng thuật toán để xem lý thuyết, điều chỉnh tham số và xem kết quả trực quan.")
 
-def plot_confusion(y_test, y_pred, labels=None):
-    cm = confusion_matrix(y_test, y_pred)
+def plot_confusion(y_true, y_pred, labels):
+    cm = confusion_matrix(y_true, y_pred)
     fig, ax = plt.subplots(figsize=(4, 3))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
                 xticklabels=labels, yticklabels=labels, ax=ax)
@@ -113,6 +113,7 @@ def plot_decision_boundary(model, X, y, title="Decision Boundary"):
     plt.tight_layout()
     return fig
 
+# 1. KNN
 if "KNN" in algo:
     st.markdown('<div class="algo-badge">Supervised Learning · Classification</div>', unsafe_allow_html=True)
     st.markdown("## 1️⃣ K-Nearest Neighbors (KNN)")
@@ -161,7 +162,7 @@ $$d(x, y) = \\sqrt{\\sum_{i=1}^{n}(x_i - y_i)^2}$$
         target_names = ["setosa", "versicolor", "virginica"]
     else:
         data = load_breast_cancer()
-        target_names = list(data.target_names)
+        target_names = ["malignant", "benign"]
 
     X, y = data.data, data.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size/100, random_state=42)
@@ -201,6 +202,7 @@ $$d(x, y) = \\sqrt{\\sum_{i=1}^{n}(x_i - y_i)^2}$$
         st.pyplot(fig2)
         plt.close()
 
+# 2. DECISION TREE
 elif "Decision Tree" in algo:
     st.markdown('<div class="algo-badge">Supervised Learning · Classification</div>', unsafe_allow_html=True)
     st.markdown("## 2️⃣ Decision Tree (Cây quyết định)")
@@ -263,6 +265,7 @@ $$Gini = 1 - \\sum_{i=1}^{C} p_i^2$$
     st.pyplot(fig3)
     plt.close()
 
+# 3. RANDOM FOREST
 elif "Random Forest" in algo:
     st.markdown('<div class="algo-badge">Ensemble Learning · Classification</div>', unsafe_allow_html=True)
     st.markdown("## 3️⃣ Random Forest")
@@ -305,7 +308,7 @@ elif "Random Forest" in algo:
         feature_names = ["sepal length", "sepal width", "petal length", "petal width"]
     else:
         data = load_breast_cancer()
-        target_names = list(data.target_names)
+        target_names = ["malignant", "benign"]
         feature_names = list(data.feature_names)
         
     X, y = data.data, data.target
@@ -337,6 +340,7 @@ elif "Random Forest" in algo:
         st.pyplot(fig2)
         plt.close()
 
+# 4. SVM
 elif "SVM" in algo:
     st.markdown('<div class="algo-badge">Supervised Learning · Classification</div>', unsafe_allow_html=True)
     st.markdown("## 4️⃣ Support Vector Machine (SVM)")
@@ -375,7 +379,7 @@ $$\\min_{w,b} \\frac{1}{2}||w||^2 \\quad \\text{s.t. } y_i(w^Tx_i + b) \\geq 1$$
         gamma = st.selectbox("Gamma", ["scale", "auto"])
 
     data = load_breast_cancer()
-    target_names = list(data.target_names)
+    target_names = ["malignant", "benign"]
     
     X, y = data.data, data.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -408,6 +412,7 @@ $$\\min_{w,b} \\frac{1}{2}||w||^2 \\quad \\text{s.t. } y_i(w^Tx_i + b) \\geq 1$$
         st.pyplot(fig2)
         plt.close()
 
+# 5. LOGISTIC REGRESSION
 elif "Logistic" in algo:
     st.markdown('<div class="algo-badge">Supervised Learning · Classification</div>', unsafe_allow_html=True)
     st.markdown("## 5️⃣ Logistic Regression")
@@ -442,7 +447,7 @@ elif "Logistic" in algo:
         max_iter = st.slider("Max iterations", 100, 1000, 300, 50)
 
     data = load_breast_cancer()
-    target_names = list(data.target_names)
+    target_names = ["malignant", "benign"]
     
     X, y = data.data, data.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -478,6 +483,7 @@ elif "Logistic" in algo:
         st.pyplot(fig2)
         plt.close()
 
+# 6. LINEAR REGRESSION
 elif "Linear Regression" in algo:
     st.markdown('<div class="algo-badge">Supervised Learning · Regression</div>', unsafe_allow_html=True)
     st.markdown("## 6️⃣ Linear Regression")
@@ -560,6 +566,7 @@ $$MSE = \\frac{1}{n}\\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2$$
         st.pyplot(fig2)
         plt.close()
 
+# 7. K-MEANS
 elif "K-Means" in algo:
     st.markdown('<div class="algo-badge">Unsupervised Learning · Clustering</div>', unsafe_allow_html=True)
     st.markdown("## 7️⃣ K-Means Clustering")
