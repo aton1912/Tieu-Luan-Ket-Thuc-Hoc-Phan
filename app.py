@@ -350,7 +350,7 @@ st.markdown("---")
 st.markdown("""
 <div style="text-align:center; color:#888; font-size:0.85rem; padding: 1rem 0">
     📊 Tiểu luận Nhập môn Khoa học Dữ liệu
-        -Trần Ngọc Bảo Toàn
-            -24T1110010
+        - Trần Ngọc Bảo Toàn
+            - 24T1110010
 </div>
 """, unsafe_allow_html=True)
