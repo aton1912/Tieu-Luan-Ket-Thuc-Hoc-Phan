@@ -18,10 +18,9 @@
 | 1 | K-Nearest Neighbors (KNN) | Supervised – Classification | Iris, Breast Cancer |
 | 2 | Decision Tree | Supervised – Classification | Iris |
 | 3 | Random Forest | Ensemble – Classification | Iris, Breast Cancer |
-| 4 | Support Vector Machine (SVM) | Supervised – Classification | Breast Cancer |
-| 5 | Logistic Regression | Supervised – Classification | Breast Cancer |
-| 6 | Linear Regression | Supervised – Regression | Synthetic |
-| 7 | K-Means Clustering | Unsupervised – Clustering | Synthetic |
+| 4 | Logistic Regression | Supervised – Classification | Breast Cancer |
+| 5 | Linear Regression | Supervised – Regression | Synthetic |
+| 6 | K-Means Clustering | Unsupervised – Clustering | Synthetic |
 
 ---
 
@@ -85,7 +84,6 @@ Báo Cáo Tiểu Luận Kết Thúc Học Phần/
 - **KNN**: Phân loại dựa trên K điểm gần nhất  
 - **Decision Tree**: Cây quyết định với Gini/Entropy  
 - **Random Forest**: Ensemble nhiều cây quyết định  
-- **SVM**: Siêu phẳng tối ưu với kernel trick  
 - **Logistic Regression**: Phân loại dựa trên xác suất Sigmoid  
 - **Linear Regression**: Hồi quy tuyến tính MSE  
 
