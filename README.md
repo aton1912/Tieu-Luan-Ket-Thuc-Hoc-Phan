@@ -61,7 +61,7 @@ Mở trình duyệt và truy cập: `http://localhost:8501`
 ## 📁 Cấu trúc project
 
 ```
-ml-algorithms-demo/
+Báo Cáo Tiểu Luận Kết Thúc Học Phần/
 ├── app.py              # File chính Streamlit
 ├── requirements.txt    # Dependencies
 └── README.md           # Hướng dẫn
@@ -69,7 +69,7 @@ ml-algorithms-demo/
 
 ---
 
-## 🔧 Tính năng
+## Tính năng
 
 - **Lý thuyết**: Giải thích trực quan với công thức toán học LaTeX
 - **Điều chỉnh tham số**: Slider tương tác để thay đổi hyperparameter
@@ -94,7 +94,7 @@ ml-algorithms-demo/
 
 ---
 
-## 🛠 Công nghệ sử dụng
+## Công nghệ sử dụng
 
 - **Streamlit** – Web framework cho Data Science
 - **scikit-learn** – Thư viện ML chính
@@ -103,7 +103,8 @@ ml-algorithms-demo/
 
 ---
 
-## 👤 Tác giả
+## Tác giả
 
-*Sinh viên Nhập môn Khoa học Dữ liệu*  
+*Trần Ngọc Bảo Toàn*  
+*MSV: 24T1110010"
 *Năm học 2024–2025*
