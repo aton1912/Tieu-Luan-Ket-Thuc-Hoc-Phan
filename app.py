@@ -272,7 +272,12 @@ $$IG = H(parent) - \\sum_i \\frac{n_i}{n} H(child_i)$$
 
     st.markdown('<div class="section-header">🌳 Cây quyết định</div>', unsafe_allow_html=True)
     fig3, ax = plt.subplots(figsize=(14, 5))
-    plot_tree(model, feature_names=data.feature_names, class_names=data.target_names,
+    plot_tree(model, if dataset_name == "Iris":
+            feature_names = ["sepal length", "sepal width", "petal length", "petal width"]
+        elif dataset_name == "Breast Cancer":
+            feature_names = list(load_breast_cancer().feature_names)
+        else:
+            feature_names = [f"Feature {i+1}" for i in range(X.shape[1])], class_names=data.target_names,
               filled=True, rounded=True, fontsize=8, ax=ax)
     plt.tight_layout(); st.pyplot(fig3); plt.close()
 
