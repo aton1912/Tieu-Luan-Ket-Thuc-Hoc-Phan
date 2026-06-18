@@ -2,13 +2,10 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
 import seaborn as sns
-from sklearn.datasets import (
-    load_iris, load_breast_cancer, make_moons, make_blobs, make_regression
-)
+from sklearn.datasets import load_iris, load_breast_cancer, make_regression, make_blobs
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import (
     accuracy_score, classification_report, confusion_matrix,
     mean_squared_error, r2_score
@@ -25,7 +22,6 @@ warnings.filterwarnings("ignore")
 # ─────────────────────────────────────────────
 st.set_page_config(
     page_title="Thuật toán Học máy – Demo",
-    page_icon="🤖",
     layout="wide",
 )
 
@@ -79,7 +75,7 @@ with st.sidebar:
     st.info("Chọn từng thuật toán để xem lý thuyết, điều chỉnh tham số và xem kết quả trực quan.")
 
 # ═══════════════════════════════════════════════
-# HÀM TIỆN ÍCH
+# HÀM TIỆN ÍCH IRIS / CANCER / SYNTHETIC
 # ═══════════════════════════════════════════════
 
 def plot_confusion(y_test, y_pred, labels=None):
@@ -121,7 +117,7 @@ def plot_decision_boundary(model, X, y, title="Decision Boundary"):
     return fig
 
 # ═══════════════════════════════════════════════
-#  KNN
+#  1. KNN
 # ═══════════════════════════════════════════════
 if "KNN" in algo:
     st.markdown('<div class="algo-badge">Supervised Learning · Classification</div>', unsafe_allow_html=True)
@@ -136,18 +132,10 @@ if "KNN" in algo:
 **Công thức khoảng cách Euclidean:**
 $$d(x, y) = \\sqrt{\\sum_{i=1}^{n}(x_i - y_i)^2}$$
 
-**Ưu điểm:**
-- Đơn giản, dễ hiểu
-- Không cần giai đoạn huấn luyện
-
-**Nhược điểm:**
-- Chậm với dữ liệu lớn
-- Nhạy cảm với nhiễu và chiều dữ liệu cao
-
-**Ứng dụng:** Hệ thống gợi ý phim, nhận dạng chữ viết tay, chẩn đoán bệnh.
+**Ưu điểm:** Đơn giản, dễ hiểu, không cần giai đoạn huấn luyện.  
+**Nhược điểm:** Chậm với dữ liệu lớn, nhạy cảm với nhiễu.
 """)
         with col2:
-            # Minh họa KNN
             np.random.seed(42)
             fig, ax = plt.subplots(figsize=(4, 3.5))
             X_demo = np.random.randn(30, 2)
@@ -161,8 +149,7 @@ $$d(x, y) = \\sqrt{\\sum_{i=1}^{n}(x_i - y_i)^2}$$
             dists = np.sqrt(((X_demo - new_pt)**2).sum(axis=1))
             knn_idx = np.argsort(dists)[:3]
             for idx in knn_idx:
-                ax.plot([new_pt[0,0], X_demo[idx,0]], [new_pt[0,1], X_demo[idx,1]],
-                        'k--', alpha=0.5, linewidth=1)
+                ax.plot([new_pt[0,0], X_demo[idx,0]], [new_pt[0,1], X_demo[idx,1]], 'k--', alpha=0.5, linewidth=1)
             ax.legend(fontsize=7); ax.set_title("Minh họa KNN (K=3)", fontsize=9)
             st.pyplot(fig); plt.close()
 
@@ -196,7 +183,6 @@ $$d(x, y) = \\sqrt{\\sum_{i=1}^{n}(x_i - y_i)^2}$$
         fig = plot_confusion(y_test, y_pred, list(data.target_names))
         st.pyplot(fig); plt.close()
     with col2:
-        # K vs Accuracy curve
         ks = list(range(1, 21))
         accs = []
         for ki in ks:
@@ -211,12 +197,11 @@ $$d(x, y) = \\sqrt{\\sum_{i=1}^{n}(x_i - y_i)^2}$$
         ax.legend(); plt.tight_layout()
         st.pyplot(fig2); plt.close()
 
-
 # ═══════════════════════════════════════════════
-#  DECISION TREE
+#  2. DECISION TREE
 # ═══════════════════════════════════════════════
 elif "Decision Tree" in algo:
-    st.markdown('<div class="algo-badge">Supervised Learning · Classification / Regression</div>', unsafe_allow_html=True)
+    st.markdown('<div class="algo-badge">Supervised Learning · Classification</div>', unsafe_allow_html=True)
     st.markdown("## 2️⃣ Decision Tree (Cây quyết định)")
 
     with st.expander("📖 Lý thuyết", expanded=True):
@@ -226,12 +211,8 @@ elif "Decision Tree" in algo:
 **Tiêu chí phân chia (Gini Impurity):**
 $$Gini = 1 - \\sum_{i=1}^{C} p_i^2$$
 
-**Information Gain (Entropy):**
-$$IG = H(parent) - \\sum_i \\frac{n_i}{n} H(child_i)$$
-
-**Ưu điểm:** Dễ giải thích, không cần chuẩn hóa dữ liệu  
-**Nhược điểm:** Dễ overfit nếu không giới hạn độ sâu  
-**Ứng dụng:** Chẩn đoán y tế, phân tích rủi ro tín dụng, phát hiện gian lận.
+**Ưu điểm:** Dễ giải thích trực quan, không bắt buộc chuẩn hóa dữ liệu.  
+**Nhược điểm:** Dễ bị overfit sâu sắc nếu không cấu hình giới hạn độ sâu.
 """)
 
     st.markdown('<div class="section-header">⚙️ Thử nghiệm</div>', unsafe_allow_html=True)
@@ -244,8 +225,7 @@ $$IG = H(parent) - \\sum_i \\frac{n_i}{n} H(child_i)$$
     data = load_iris()
     X, y = data.data, data.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    model = DecisionTreeClassifier(max_depth=max_depth, criterion=criterion,
-                                   min_samples_split=min_samples, random_state=42)
+    model = DecisionTreeClassifier(max_depth=max_depth, criterion=criterion, min_samples_split=min_samples, random_state=42)
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
@@ -259,7 +239,6 @@ $$IG = H(parent) - \\sum_i \\frac{n_i}{n} H(child_i)$$
         fig = plot_confusion(y_test, y_pred, list(data.target_names))
         st.pyplot(fig); plt.close()
     with col2:
-        # Feature importance
         importances = model.feature_importances_
         feat_names = data.feature_names
         fig2, ax = plt.subplots(figsize=(4, 3))
@@ -272,52 +251,34 @@ $$IG = H(parent) - \\sum_i \\frac{n_i}{n} H(child_i)$$
 
     st.markdown('<div class="section-header">🌳 Cây quyết định</div>', unsafe_allow_html=True)
     fig3, ax = plt.subplots(figsize=(14, 5))
-    plot_tree(model, 
-        if dataset_name == "Iris":
-            feature_names = ["sepal length", "sepal width", "petal length", "petal width"]
-        elif dataset_name == "Breast Cancer":
-            feature_names = list(load_breast_cancer().feature_names)
-        else:
-            feature_names = [f"Feature {i+1}" for i in range(X.shape[1])], class_names=data.target_names,
-              filled=True, rounded=True, fontsize=8, ax=ax)
+    plot_tree(model, feature_names=data.feature_names, class_names=data.target_names, filled=True, rounded=True, fontsize=8, ax=ax)
     plt.tight_layout(); st.pyplot(fig3); plt.close()
 
-
 # ═══════════════════════════════════════════════
-#  RANDOM FOREST
+#  3. RANDOM FOREST
 # ═══════════════════════════════════════════════
 elif "Random Forest" in algo:
-    st.markdown('<div class="algo-badge">Ensemble Learning · Classification / Regression</div>', unsafe_allow_html=True)
+    st.markdown('<div class="algo-badge">Ensemble Learning · Classification</div>', unsafe_allow_html=True)
     st.markdown("## 3️⃣ Random Forest")
 
     with st.expander("📖 Lý thuyết", expanded=True):
         col1, col2 = st.columns([3, 2])
         with col1:
             st.markdown("""
-**Random Forest** là tập hợp nhiều cây quyết định, mỗi cây được huấn luyện trên một mẫu bootstrap khác nhau với tập thuộc tính ngẫu nhiên.
+**Random Forest** là tập hợp nhiều cây quyết định độc lập, mỗi cây được huấn luyện trên một mẫu bootstrap khác nhau với tập thuộc tính ngẫu nhiên.
 
-**Dự đoán cuối cùng:**
-$$\\hat{y} = \\text{majority vote}\\{h_1(x), h_2(x), ..., h_T(x)\\}$$
-
-- **Bagging**: Mỗi cây dùng mẫu bootstrap khác nhau  
-- **Feature randomness**: Mỗi lần tách chỉ xét $\\sqrt{p}$ thuộc tính
-
-**Ưu điểm:** Chính xác cao, chống overfit  
-**Ứng dụng:** Dự đoán giá cổ phiếu, phân loại ảnh, phát hiện gian lận.
+**Dự đoán cuối cùng:** Biểu quyết theo số đông (majority vote).  
+**Ưu điểm:** Chính xác cao, kiểm soát quá khớp cực tốt.
 """)
         with col2:
-            # Minh họa ensemble
             fig, ax = plt.subplots(figsize=(3.5, 3))
             trees = ["Tree 1\n→ A", "Tree 2\n→ B", "Tree 3\n→ A", "Tree 4\n→ A"]
             colors = ['#bbdefb', '#bbdefb', '#bbdefb', '#bbdefb']
             for i, (t, c) in enumerate(zip(trees, colors)):
-                ax.add_patch(plt.FancyBboxPatch((i*0.9, 0.6), 0.75, 0.4,
-                             boxstyle="round,pad=0.05", facecolor=c, edgecolor='#1565c0', linewidth=1.5))
+                ax.add_patch(plt.FancyBboxPatch((i*0.9, 0.6), 0.75, 0.4, boxstyle="round,pad=0.05", facecolor=c, edgecolor='#1565c0', linewidth=1.5))
                 ax.text(i*0.9+0.375, 0.8, t, ha='center', va='center', fontsize=7, color='#0d47a1')
-            ax.add_patch(plt.FancyBboxPatch((1.35, 0.1), 1.0, 0.35,
-                         boxstyle="round,pad=0.05", facecolor='#1a73e8', edgecolor='#0d47a1'))
-            ax.text(1.85, 0.275, "Vote → A", ha='center', va='center', fontsize=9,
-                    color='white', fontweight='bold')
+            ax.add_patch(plt.FancyBboxPatch((1.35, 0.1), 1.0, 0.35, boxstyle="round,pad=0.05", facecolor='#1a73e8', edgecolor='#0d47a1'))
+            ax.text(1.85, 0.275, "Vote → A", ha='center', va='center', fontsize=9, color='white', fontweight='bold')
             ax.set_xlim(-0.2, 4); ax.set_ylim(0, 1.3)
             ax.axis('off'); ax.set_title("Ensemble Voting", fontsize=9)
             st.pyplot(fig); plt.close()
@@ -333,6 +294,7 @@ $$\\hat{y} = \\text{majority vote}\\{h_1(x), h_2(x), ..., h_T(x)\\}$$
         data = load_iris()
     else:
         data = load_breast_cancer()
+        
     X, y = data.data, data.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     model = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth_rf, random_state=42)
@@ -354,13 +316,12 @@ $$\\hat{y} = \\text{majority vote}\\{h_1(x), h_2(x), ..., h_T(x)\\}$$
         idx = np.argsort(importances)
         ax.barh(range(len(idx)), importances[idx], color='#43a047', alpha=0.85)
         ax.set_yticks(range(len(idx)))
-        ax.set_yticklabels([data.feature_names[i][:20] for i in idx], fontsize=7)
+        ax.set_yticklabels([str(data.feature_names[i])[:20] for i in idx], fontsize=7)
         ax.set_title("Feature Importance (RF)")
         plt.tight_layout(); st.pyplot(fig2); plt.close()
 
-
 # ═══════════════════════════════════════════════
-#  SVM
+#  4. SVM
 # ═══════════════════════════════════════════════
 elif "SVM" in algo:
     st.markdown('<div class="algo-badge">Supervised Learning · Classification</div>', unsafe_allow_html=True)
@@ -374,16 +335,8 @@ elif "SVM" in algo:
 
 **Hàm tối ưu hóa:**
 $$\\min_{w,b} \\frac{1}{2}||w||^2 \\quad \\text{s.t. } y_i(w^Tx_i + b) \\geq 1$$
-
-**Kernel trick** (phi tuyến):
-- **Linear**: $K(x,y) = x^Ty$
-- **RBF (Gaussian)**: $K(x,y) = e^{-\\gamma||x-y||^2}$
-- **Polynomial**: $K(x,y) = (x^Ty + c)^d$
-
-**Ứng dụng:** Nhận dạng khuôn mặt, phân loại văn bản, phát hiện email spam.
 """)
         with col2:
-            # Minh họa margin
             np.random.seed(0)
             fig, ax = plt.subplots(figsize=(4, 3.5))
             X_pos = np.random.randn(15, 2) + np.array([2, 2])
@@ -424,39 +377,27 @@ $$\\min_{w,b} \\frac{1}{2}||w||^2 \\quad \\text{s.t. } y_i(w^Tx_i + b) \\geq 1$$
         fig = plot_confusion(y_test, y_pred, list(data.target_names))
         st.pyplot(fig); plt.close()
     with col2:
-        # Decision boundary on 2 features
         X2 = X[:, :2]
         X2_train, X2_test, y2_train, y2_test = train_test_split(X2, y, test_size=0.2, random_state=42)
         sc2 = StandardScaler()
         X2_train_s = sc2.fit_transform(X2_train)
-        X2_test_s = sc2.transform(X2_test)
         m2 = SVC(kernel=kernel, C=C, gamma=gamma, random_state=42)
         m2.fit(X2_train_s, y2_train)
         fig2 = plot_decision_boundary(m2, X2_train_s, y2_train, f"SVM – {kernel} kernel (2 features)")
         st.pyplot(fig2); plt.close()
 
-
 # ═══════════════════════════════════════════════
-#  LOGISTIC REGRESSION
+#  5. LOGISTIC REGRESSION
 # ═══════════════════════════════════════════════
 elif "Logistic" in algo:
-    st.markdown('<div class="algo-badge">Supervised Learning · Binary/Multi-class Classification</div>', unsafe_allow_html=True)
+    st.markdown('<div class="algo-badge">Supervised Learning · Classification</div>', unsafe_allow_html=True)
     st.markdown("## 5️⃣ Logistic Regression")
 
     with st.expander("📖 Lý thuyết", expanded=True):
         col1, col2 = st.columns([3, 2])
         with col1:
             st.markdown("""
-**Logistic Regression** dùng hàm **Sigmoid** để dự đoán xác suất thuộc một lớp.
-
-**Hàm Sigmoid:**
-$$\\sigma(z) = \\frac{1}{1+e^{-z}}, \\quad z = w^Tx + b$$
-
-**Hàm mất mát (Cross-Entropy):**
-$$L = -\\frac{1}{n}\\sum[y_i \\log(\\hat{p}_i) + (1-y_i)\\log(1-\\hat{p}_i)]$$
-
-**Ưu điểm:** Nhanh, giải thích được, đưa ra xác suất  
-**Ứng dụng:** Phát hiện email spam, dự báo bệnh, tín dụng.
+**Logistic Regression** sử dụng hàm số phi tuyến **Sigmoid** để ép giá trị đầu ra thành xác suất thuộc một phân lớp nhị phân công khai rộng rãi từ 0 tới 1.
 """)
         with col2:
             z = np.linspace(-6, 6, 200)
@@ -506,9 +447,8 @@ $$L = -\\frac{1}{n}\\sum[y_i \\log(\\hat{p}_i) + (1-y_i)\\log(1-\\hat{p}_i)]$$
         ax.set_title("Phân phối xác suất"); ax.legend()
         plt.tight_layout(); st.pyplot(fig2); plt.close()
 
-
 # ═══════════════════════════════════════════════
-#  LINEAR REGRESSION
+#  6. LINEAR REGRESSION
 # ═══════════════════════════════════════════════
 elif "Linear Regression" in algo:
     st.markdown('<div class="algo-badge">Supervised Learning · Regression</div>', unsafe_allow_html=True)
@@ -518,18 +458,10 @@ elif "Linear Regression" in algo:
         col1, col2 = st.columns([3, 2])
         with col1:
             st.markdown("""
-**Linear Regression** mô hình hóa quan hệ tuyến tính giữa biến đầu vào X và đầu ra y.
-
-**Mô hình:**
-$$\\hat{y} = w_0 + w_1x_1 + ... + w_px_p = \\mathbf{w}^T\\mathbf{x}$$
+**Linear Regression** mô hình hóa quan hệ tuyến tính giữa biến đầu vào X và đầu ra liên tục y.
 
 **Hàm mất mát (MSE):**
 $$MSE = \\frac{1}{n}\\sum_{i=1}^{n}(y_i - \\hat{y}_i)^2$$
-
-**Nghiệm dạng đóng (Normal Equation):**
-$$\\mathbf{w}^* = (\\mathbf{X}^T\\mathbf{X})^{-1}\\mathbf{X}^T\\mathbf{y}$$
-
-**Ứng dụng:** Dự báo giá nhà, ước lượng doanh thu, phân tích xu hướng.
 """)
         with col2:
             np.random.seed(42)
@@ -539,9 +471,6 @@ $$\\mathbf{w}^* = (\\mathbf{X}^T\\mathbf{X})^{-1}\\mathbf{X}^T\\mathbf{y}$$
             ax.scatter(x_demo, y_demo, color='#1e88e5', s=30, alpha=0.7)
             m, b = np.polyfit(x_demo, y_demo, 1)
             ax.plot(x_demo, m*x_demo+b, color='#e53935', linewidth=2.5, label=f'y={m:.2f}x+{b:.2f}')
-            for xi, yi in zip(x_demo[::4], y_demo[::4]):
-                yi_pred = m*xi+b
-                ax.plot([xi, xi], [yi, yi_pred], 'gray', alpha=0.4, linewidth=0.8)
             ax.set_title("Linear Regression"); ax.legend(fontsize=8)
             plt.tight_layout(); st.pyplot(fig); plt.close()
 
@@ -592,9 +521,8 @@ $$\\mathbf{w}^* = (\\mathbf{X}^T\\mathbf{X})^{-1}\\mathbf{X}^T\\mathbf{y}$$
         ax.set_title("Residual Plot")
         plt.tight_layout(); st.pyplot(fig2); plt.close()
 
-
 # ═══════════════════════════════════════════════
-#  K-MEANS
+#  7. K-MEANS
 # ═══════════════════════════════════════════════
 elif "K-Means" in algo:
     st.markdown('<div class="algo-badge">Unsupervised Learning · Clustering</div>', unsafe_allow_html=True)
@@ -604,20 +532,7 @@ elif "K-Means" in algo:
         col1, col2 = st.columns([3, 2])
         with col1:
             st.markdown("""
-**K-Means** phân nhóm dữ liệu thành K cụm bằng cách tối thiểu hóa tổng khoảng cách nội cụm.
-
-**Hàm mục tiêu (WCSS):**
-$$J = \\sum_{k=1}^{K}\\sum_{x \\in C_k} ||x - \\mu_k||^2$$
-
-**Thuật toán:**
-1. Khởi tạo K centroid ngẫu nhiên
-2. Gán mỗi điểm vào cụm gần nhất
-3. Cập nhật centroid = trung bình cụm
-4. Lặp đến khi hội tụ
-
-**Elbow Method**: Chọn K tại điểm "gập khủy tay" của đường WCSS.
-
-**Ứng dụng:** Phân khúc khách hàng, nén ảnh, phát hiện dị thường.
+**K-Means** phân nhóm tự động dữ liệu thô chưa gán nhãn thành K cụm rời rạc bằng cách tối thiểu hóa tổng khoảng cách bình phương nội cụm (WCSS).
 """)
         with col2:
             np.random.seed(10)
@@ -642,8 +557,7 @@ $$J = \\sum_{k=1}^{K}\\sum_{x \\in C_k} ||x - \\mu_k||^2$$
         n_centers = st.slider("Số cụm thực sự", 2, 8, 4)
         cluster_std = st.slider("Độ phân tán", 0.3, 2.0, 0.8)
 
-    X, y_true = make_blobs(n_samples=n_samples_km, centers=n_centers,
-                           cluster_std=cluster_std, random_state=42)
+    X, y_true = make_blobs(n_samples=n_samples_km, centers=n_centers, cluster_std=cluster_std, random_state=42)
     model = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
     labels = model.fit_predict(X)
     inertia = model.inertia_
@@ -662,12 +576,10 @@ $$J = \\sum_{k=1}^{K}\\sum_{x \\in C_k} ||x - \\mu_k||^2$$
         for k in range(n_clusters):
             mask = labels == k
             ax.scatter(X[mask, 0], X[mask, 1], c=[palette[k % 10]], s=30, alpha=0.7, label=f'Cụm {k+1}')
-        ax.scatter(model.cluster_centers_[:, 0], model.cluster_centers_[:, 1],
-                  c='black', marker='X', s=200, zorder=5, label='Centroids')
+        ax.scatter(model.cluster_centers_[:, 0], model.cluster_centers_[:, 1], c='black', marker='X', s=200, zorder=5, label='Centroids')
         ax.legend(fontsize=7, ncol=2); ax.set_title("Kết quả phân cụm K-Means")
         plt.tight_layout(); st.pyplot(fig); plt.close()
     with col2:
-        # Elbow method
         inertias = []
         ks = list(range(1, min(12, n_samples_km//10+2)))
         for ki in ks:
