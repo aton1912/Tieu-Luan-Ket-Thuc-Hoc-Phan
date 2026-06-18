@@ -19,8 +19,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 st.set_page_config(
-    page_title="Thuật toán Học máy – Demo",
-    page_icon="🤖",
+    page_title="Thuật toán Học máy",
     layout="wide",
 )
 
@@ -52,7 +51,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown('<div class="main-title">🤖 Thuật Toán Học Máy & Ứng Dụng</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-title"> Thuật Toán Học Máy & Ứng Dụng</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Tiểu luận Nhập môn Khoa học Dữ liệu – Demo tương tác các thuật toán ML phổ biến</div>', unsafe_allow_html=True)
 
 with st.sidebar:
@@ -351,5 +350,7 @@ st.markdown("---")
 st.markdown("""
 <div style="text-align:center; color:#888; font-size:0.85rem; padding: 1rem 0">
     📊 Tiểu luận Nhập môn Khoa học Dữ liệu
+        Trần Ngọc Bảo Toàn
+            24T1110010
 </div>
 """, unsafe_allow_html=True)
