@@ -1,4 +1,4 @@
-# 🤖 Thuật Toán Học Máy & Ứng Dụng
+# Thuật Toán Học Máy & Ứng Dụng
 
 > **Tiểu luận Nhập môn Khoa học Dữ liệu**  
 > Đề tài: *Tìm hiểu về một số thuật toán học máy và ứng dụng trong thực tế*
@@ -9,7 +9,7 @@
 
 ---
 
-## 📚 Nội dung
+## Nội dung
 
 Ứng dụng Streamlit tương tác trình bày **7 thuật toán học máy** phổ biến:
 
@@ -25,7 +25,7 @@
 
 ---
 
-## 🚀 Chạy ứng dụng
+## Chạy ứng dụng
 
 ### Cách 1: Cài đặt local
 
