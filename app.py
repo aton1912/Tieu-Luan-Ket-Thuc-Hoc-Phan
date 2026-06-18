@@ -13,7 +13,6 @@ from sklearn.metrics import (
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.cluster import KMeans
 import warnings
@@ -63,10 +62,9 @@ with st.sidebar:
         "1. K-Nearest Neighbors (KNN)",
         "2. Decision Tree",
         "3. Random Forest",
-        "4. Support Vector Machine (SVM)",
-        "5. Logistic Regression",
-        "6. Linear Regression",
-        "7. K-Means Clustering",
+        "4. Logistic Regression",
+        "5. Linear Regression",
+        "6. K-Means Clustering",
     ])
     st.markdown("---")
     st.markdown("### 📚 Thông tin")
@@ -83,22 +81,6 @@ def show_metrics(acc, report):
         """, unsafe_allow_html=True)
     with col2:
         st.text(report)
-
-def plot_decision_boundary(model, X, y, title="Decision Boundary"):
-    h = 0.02
-    x_min, x_max = X[:, 0].min()-0.5, X[:, 0].max()+0.5
-    y_min, y_max = X[:, 1].min()-0.5, X[:, 1].max()+0.5
-    xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
-    Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
-    Z = Z.reshape(xx.shape)
-    fig, ax = plt.subplots(figsize=(5, 4))
-    ax.contourf(xx, yy, Z, alpha=0.3, cmap='RdYlBu')
-    ax.scatter(X[:, 0], X[:, 1], c=y, cmap='RdYlBu', edgecolors='k', s=40, linewidths=0.5)
-    ax.set_title(title)
-    ax.set_xlabel("Feature 1")
-    ax.set_ylabel("Feature 2")
-    plt.tight_layout()
-    return fig
 
 # 1. KNN
 if "KNN" in algo:
@@ -259,50 +241,10 @@ elif "Random Forest" in algo:
         ax.set_yticklabels([str(feature_names[i])[:15] for i in idx], fontsize=7)
         plt.tight_layout(); st.pyplot(fig2); plt.close()
 
-# 4. SVM
-elif "SVM" in algo:
-    st.markdown('<div class="algo-badge">Supervised Learning · Classification</div>', unsafe_allow_html=True)
-    st.markdown("## 4️⃣ Support Vector Machine (SVM)")
-
-    col1, col2 = st.columns([1, 2])
-    with col1:
-        kernel = st.selectbox("Kernel", ["rbf", "linear", "poly"])
-        C = st.slider("Tham số C", 0.01, 10.0, 1.0)
-
-    data = load_breast_cancer()
-    target_names = ["malignant", "benign"]
-    
-    X, y = data.data, data.target
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    scaler = StandardScaler()
-    X_train_s = scaler.fit_transform(X_train)
-    X_test_s = scaler.transform(X_test)
-    
-    model = SVC(kernel=kernel, C=C, random_state=42)
-    model.fit(X_train_s, y_train)
-    y_pred = model.predict(X_test_s)
-    acc = accuracy_score(y_test, y_pred)
-
-    with col2:
-        report = classification_report(y_test, y_pred, target_names=target_names, zero_division=0)
-        show_metrics(acc, report)
-
-    col1, col2 = st.columns(2)
-    with col1:
-        cm = confusion_matrix(y_test, y_pred)
-        fig, ax = plt.subplots(figsize=(4, 3))
-        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=target_names, yticklabels=target_names, ax=ax)
-        plt.tight_layout(); st.pyplot(fig); plt.close()
-    with col2:
-        X2 = X_train_s[:, :2]
-        m2 = SVC(kernel=kernel, C=C, random_state=42).fit(X2, y_train)
-        fig2 = plot_decision_boundary(m2, X2, y_train, "SVM Boundary (2 Features)")
-        st.pyplot(fig2); plt.close()
-
-# 5. LOGISTIC REGRESSION
+# 4. LOGISTIC REGRESSION
 elif "Logistic" in algo:
     st.markdown('<div class="algo-badge">Supervised Learning · Classification</div>', unsafe_allow_html=True)
-    st.markdown("## 5️⃣ Logistic Regression")
+    st.markdown("## 4️⃣ Logistic Regression")
 
     col1, col2 = st.columns([1, 2])
     with col1:
@@ -340,10 +282,10 @@ elif "Logistic" in algo:
         ax.legend()
         plt.tight_layout(); st.pyplot(fig2); plt.close()
 
-# 6. LINEAR REGRESSION
+# 5. LINEAR REGRESSION
 elif "Linear Regression" in algo:
     st.markdown('<div class="algo-badge">Supervised Learning · Regression</div>', unsafe_allow_html=True)
-    st.markdown("## 6️⃣ Linear Regression")
+    st.markdown("## 5️⃣ Linear Regression")
 
     col1, col2 = st.columns([1, 2])
     with col1:
@@ -377,10 +319,10 @@ elif "Linear Regression" in algo:
         ax.axhline(0, color='red', linestyle='--')
         plt.tight_layout(); st.pyplot(fig2); plt.close()
 
-# 7. K-MEANS
+# 6. K-MEANS
 elif "K-Means" in algo:
     st.markdown('<div class="algo-badge">Unsupervised Learning · Clustering</div>', unsafe_allow_html=True)
-    st.markdown("## 7️⃣ K-Means Clustering")
+    st.markdown("## 6️⃣ K-Means Clustering")
 
     col1, col2 = st.columns([1, 2])
     with col1:
